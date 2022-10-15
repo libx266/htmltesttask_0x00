@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        .bolded{
+            font-weight: bold;
+            font-size: 14pt;
+        }
+        .vert-radio-form{
+            margin-bottom: 40px;
+            display: grid
+        }
+        .vert-radio-item{
+            margin-left: 50px;;
+        }
+        .inline-form-item-container{
+            display: flex;
+            float: right;
+            margin-right: calc(100% - 800px);
+        }
+        .inline-form-checkbox-container{
+            display: flex;
+            float: right;
+            margin-right: calc(100% - 314px);
+        }
+        .inline-form-item{
+            height: 74px;
+        }
+        .inline-form-item-label{
+            margin-right: 20px;
+            margin-top: 9px;
+            font-size: 14pt
+        }
+        .inline-form-checkbox-label{
+            margin-right: 20px;
+            font-size: 14pt
+        }
+        input.inline-form-item-input{
+            width:500px;
+            font-size: 14pt;
+        }
+        .form-header{
+            margin-left: 70px;
+        }
+        .horizontal-label{
+            white-space: nowrap;
+            margin-left: 30px
+        }
+        .captcha{
+            margin-left: calc((100% - (100% - 800px)) * 0.3744); 
+            margin-top: 25px;
+            margin-bottom: 50px;
+        }
+    </style>
+    <title>Регистрация</title>
+    <meta charset="UTF-16">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        function loadWebsite()
+        {
+            let site = document.getElementById("website");
+            let html = [
+                '<div class="inline-form-item">',
+                '<div class="inline-form-item-container">',
+                '<label class="inline-form-checkbox-label">Сайт Вашей компании</label>',
+                '<input id="form-main-website" name="website" class="inline-form-item-input input" type="text">',
+                '</div></div>']
+            site.innerHTML = html.join("\n");
+        }
+        function unloadWebsite()
+        {
+            let site = document.getElementById("website");
+            site.innerHTML = "";
+        }
+        function verification()
+        {
+            let phone = document.getElementById("phone").value;
+            if (phone.length != 10 || isNaN(phone)){
+                alert("Неправильно указан номер телефона!");
+                return false;
+            }
+
+            let inn = document.getElementById("inn").value
+            if (inn.length != 10 || isNaN(inn)){
+                alert("Неправильно указан номер ИНН!");
+                return false;
+            }
+
+            let checkBoxes = [
+                document.getElementById("0"),
+                document.getElementById("1"),
+                document.getElementById("2"),
+                document.getElementById("3"),
+                document.getElementById("4"),
+            ]
+
+            let checkBoxActive = 0;
+            checkBoxes.forEach(c => checkBoxActive += c.checked)
+            
+            let other = document.getElementById("other").value
+            if(checkBoxActive == 0 && (other == "" || other == null))
+            {
+                alert("Укажите ваш род деятельности!");
+                return false;
+            }
+
+            return confirm("Данные введены правильно, отправляем на сервер?");
+        }
+    </script>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item bolded" href="index.html">Регистрация</a>
+        </div>
+      </nav>
+</head>
+<body>
+    
+    <form id="form-main" style="margin-top: 100px;" onsubmit="return verification()" action="https://6349b573a59874146b25d8d2.mockapi.io/szymankowszczyznachrzaszczyzewoszycepowiatlekolody/kurwarozpodrawa" method="post">
+        <div class="control vert-radio-form">
+            <h5 class="vert-radio-item bolded">Вы регистрируетесь как</h5>
+            <label class="vert-radio-item bolded">
+              <input id="buyer" checked type="radio" onclick="unloadWebsite()" name="answer">
+              Покупатель
+            </label>
+            <label class="vert-radio-item bolded">
+              <input id="saller" c type="radio" onclick="loadWebsite()" name="answer">
+              Поставщик
+            </label>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">Эл.Почта</label>
+                <input name="email"  class="inline-form-item-input input" required type="email">
+            </div>
+        </div>
+        <h5 class="bolded form-header">Название организации</h5>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">ИП или Юр.лицо</label>
+                <input name="name" class="inline-form-item-input input" required type="text">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">ИНН</label>
+                <input id="inn" name="inn" minlength="10" maxlength="10"  class="inline-form-item-input input" required type="text">
+            </div>
+        </div>
+        <h5 class="bolded form-header">Фактический адрес</h5>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">Ваш город</label>
+                <input name="city"  class="inline-form-item-input input" required type="text">
+            </div>
+        </div>
+        <div class="inline-form-item" style="margin-left: calc((100% - (100% - 800px)) * 0.6818814887);">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label horizontal-label">Улица</label>
+                <input name = "street" style="width: 300px; font-size: 14pt;" required class="input" type="text">
+                <label class="inline-form-item-label horizontal-label">Дом/стр.</label>
+                <input name = "home" style="width: 300px; font-size: 14pt" class="input" required type="text">
+                <label style="margin-left:150px;" class="inline-form-item-label horizontal-label">Офис</label>
+                <input name = "office" style="width: 100px; font-size: 14pt" class="input" required type="text">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">Телефон</label>
+                <p class="control">
+                    <a style="font-size: 14pt;" class="button is-static">
+                      +7
+                    </a>
+                  </p>
+                <input id="phone" name="phone" minlength="10" maxlength="10" required style="width: 440px;" id="form-main-phone" class="inline-form-item-input input" type="tel">
+            </div>
+        </div>
+        <div id="website">
+
+        </div>
+        <h5 class="bolded form-header">Вид деятельности</h5>
+        <div class="inline-form-item">
+            <div class="inline-form-checkbox-container">
+                <label class="inline-form-checkbox-label">Магазин</label>
+                <input id="0" name="shop" type="checkbox">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-checkbox-container">
+                <label class="inline-form-checkbox-label">Региональная сеть магазинов</label>
+                <input id="1" name="region_shop" type="checkbox">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-checkbox-container">
+                <label class="inline-form-checkbox-label">Федеральная сеть магазинов</label>
+                <input id="2" name="federal_shop" type="checkbox">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-checkbox-container">
+                <label class="inline-form-checkbox-label">Интернет-магазин</label>
+                <input id="3" name="internet_shop" type="checkbox">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-checkbox-container">
+                <label class="inline-form-checkbox-label">Автосервис</label>
+                <input id="4" name="autoservice" type="checkbox">
+            </div>
+        </div>
+        <div class="inline-form-item">
+            <div class="inline-form-item-container">
+                <label class="inline-form-item-label">Прочее</label>
+                <input id="other" name="other" class="inline-form-item-input input" type="text">
+            </div>
+        </div>
+        <div class="g-recaptcha captcha" data-sitekey="88005553535"></div>
+        <input style="margin-left: calc((100% - (100% - 800px)) * 0.1664); margin-bottom: 40px;" type="submit" value="Отправить заявку" class="button is-link">
+    </form>
+</body>
